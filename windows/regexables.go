@@ -1,7 +1,6 @@
 package windows
 
 import (
-	"fmt"
 	"regexp"
 	"strings"
 )
@@ -12,19 +11,19 @@ func regexableFolder(test string) bool {
 
 		return true
 	} else if matched, _ := regexp.MatchString("dropbox.*", test); matched {
-		if ExParanoia {
+		if Paranoia {
 			return false
 		}
 
 		return true
 	} else if matched, _ := regexp.MatchString("onedrive", test); matched {
-		if ExParanoia {
+		if Paranoia {
 			return false
 		}
 
 		return true
 	} else if matched, _ := regexp.MatchString("\\..*", test); matched {
-		if Paranoia || ExParanoia {
+		if Paranoia {
 			return false
 		}
 
@@ -34,31 +33,20 @@ func regexableFolder(test string) bool {
 	return false
 }
 
-func regexableFile(test string, regex ...interface{}) bool {
+func regexableFile(test string) bool {
 	test = strings.ToLower(test)
-	if matched, _ := regexp.MatchString(`.*\.dat`, test); matched {
-		if len(regex) > 0 {
-			fmt.Printf("   - Skipped %s\n", test)
-		}
+	if matched, _ := regexp.MatchString(`.*\.dat`, strings.ToLower(test)); matched {
 		return true
+
 	} else if matched, _ := regexp.MatchString(`.*\.lnk`, test); matched {
-		if Paranoia || ExParanoia {
-			return false
-		}
-		if len(regex) > 0 {
-			fmt.Printf("   - Skipped %s\n", test)
-		}
 		return true
-	} else if matched, _ := regexp.MatchString("ntuser.*", test); matched {
-		if len(regex) > 0 {
-			fmt.Printf("   - Skipped %s\n", test)
-		}
+
+	} else if matched, _ := regexp.MatchString("ntuser.*", strings.ToLower(test)); matched {
 		return true
+
 	} else if matched, _ := regexp.MatchString("desktop.ini", test); matched {
-		if len(regex) > 0 {
-			fmt.Printf("   - Skipped %s\n", test)
-		}
 		return true
+
 	}
 	return false
 }

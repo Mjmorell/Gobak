@@ -18,6 +18,7 @@ func PanicR(str string) {
 
 //Wait is a function used to pause the program
 func Wait(str ...string) {
+	Flush()
 	fmt.Println()
 	if len(str) > 0 {
 		CenterString("──────────────────────────────", 0, 30)
@@ -45,10 +46,18 @@ func Clear() {
 	}
 }
 
+func Flush() {
+	reader := bufio.NewReader(os.Stdin)
+	var i int
+	for i = 0; i < reader.Buffered(); i++ {
+		reader.ReadByte()
+	}
+}
+
 func Header(col ...func(...interface{}) string) {
 	Clear()
 	fmt.Println("────────────────────────────────────────────────────────────────────────────────────────────────────")
-	fmt.Println(CenterStringR(HIYellow("Gobak")+` ── KB0016604 ── v`+Version+"_"+GitCommit, 0, 36))
+	fmt.Println(CenterStringR(HIYellow("ShonStop")+` ── KB0016604 ── v`+Version+"_"+GitCommit, 0, 39))
 	if OffMode {
 		fmt.Println(CenterStringR(HICyan("-- OFFLINE MODE --"), 0, 18))
 	}

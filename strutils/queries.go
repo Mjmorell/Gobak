@@ -76,17 +76,40 @@ func QYesNo(question string) bool {
 		Header()
 		fmt.Printf("    %s\n", Cyan(question))
 		fmt.Println("    ─────")
-		fmt.Println("(y) Yes")
-		fmt.Println("(n) No")
+		fmt.Println("(1) Yes")
+		fmt.Println("(2) No")
 		fmt.Println("    ─────")
 		fmt.Printf("  > ")
 
 		fmt.Scan(&answer)
 		answer = strings.ToLower(answer)
-		if answer == "y" || answer == "yes" {
+		if answer == "y" || answer == "yes" || answer == "1" {
 			Header()
 			return true
-		} else if answer == "n" || answer == "no" {
+		} else if answer == "n" || answer == "no" || answer == "2" {
+			Header()
+			return false
+		}
+	}
+	panic("HOW DID THIS HAPPEN?")
+}
+
+func QYesNoNOCLEAR(question string) bool {
+	var answer string
+	for true {
+		fmt.Printf("    %s\n", Cyan(question))
+		fmt.Println("    ─────")
+		fmt.Println("(1) Yes")
+		fmt.Println("(2) No")
+		fmt.Println("    ─────")
+		fmt.Printf("  > ")
+
+		fmt.Scan(&answer)
+		answer = strings.ToLower(answer)
+		if answer == "y" || answer == "yes" || answer == "1" {
+			Header()
+			return true
+		} else if answer == "n" || answer == "no" || answer == "2" {
 			Header()
 			return false
 		}

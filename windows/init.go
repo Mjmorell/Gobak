@@ -1,11 +1,9 @@
 package windows
 
 var (
-	Paranoia   bool
-	ExParanoia bool
+	Paranoia bool
 )
 
 func init() {
 	Paranoia = false
-	ExParanoia = false
 }

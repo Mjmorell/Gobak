@@ -42,11 +42,12 @@ func GetUsers(src d.Drive) (users u.UserList) {
 			users.AllUsers = append(users.AllUsers, tempUser)
 		}
 	}
+
 	return
 }
 
 func SetupUsers(users *u.UserList) {
-	for _, v := range users.AllUsers {
+	for k, v := range users.AllUsers {
 
 		files, err := ioutil.ReadDir(v.AbsolutePath)
 		if err != nil {
@@ -60,122 +61,104 @@ func SetupUsers(users *u.UserList) {
 				temp.AbsolutePath = v.AbsolutePath + "\\" + f.Name()
 				temp.Size = DirSize(temp.AbsolutePath)
 				//temp.Percentage = math.Round(float64(temp.Size)/float64(v.SizeParanoid)*100) / 100
-				v.Folders = append(v.Folders, temp)
-			} else {
+				users.AllUsers[k].Folders = append(users.AllUsers[k].Folders, temp)
+			} else if strings.ToLower(f.Name()) != "appdata" {
 				var temp u.UserRootFile
 				temp.Filename = f.Name()
 				temp.AbsolutePath = v.AbsolutePath + "\\" + f.Name()
 				temp.Size = uint64(f.Size())
-				v.Files = append(v.Files, temp)
+				users.AllUsers[k].Files = append(users.AllUsers[k].Files, temp)
 			}
 		}
 	}
 }
 
 func SizeUsers(users *u.UserList) {
-	Paranoia = false
-	ExParanoia = false
-	for _, v := range users.AllUsers {
-		// sizes
-		for _, eachFolder := range v.Folders {
-			if regexableFolder(eachFolder.Folder) {
-				continue
-			}
-			v.SizeNormal = v.SizeNormal + eachFolder.Size
-		}
-		for _, eachFile := range v.Files {
-			if regexableFile(eachFile.Filename) {
-				continue
-			}
-			v.SizeNormal = v.SizeNormal + eachFile.Size
-		}
-		// percentages
-		for _, eachFolder := range v.Folders {
-			if regexableFolder(eachFolder.Folder) {
-				continue
-			}
-			eachFolder.Percentage = math.Round(float64(v.SizeNormal)/float64(eachFolder.Size)*100) / 100.
-		}
-		for _, eachFile := range v.Files {
-			if regexableFile(eachFile.Filename) {
-				continue
-			}
-			eachFile.Percentage = math.Round(float64(v.SizeNormal)/float64(eachFile.Size)*100) / 100.
-		}
-
-	}
-
-	////
-	////
-
 	Paranoia = true
-	ExParanoia = false
-	for _, v := range users.AllUsers {
+	for k := range users.AllUsers {
 		// sizes
-		for _, eachFolder := range v.Folders {
+		for kf, eachFolder := range users.AllUsers[k].Folders {
 			if regexableFolder(eachFolder.Folder) {
 				continue
 			}
-			v.SizeParanoid = v.SizeParanoid + eachFolder.Size
+			users.AllUsers[k].Folders[kf].Mode = 1
+			users.AllUsers[k].SizeParanoid = users.AllUsers[k].SizeParanoid + eachFolder.Size
 		}
-		for _, eachFile := range v.Files {
+		for kf, eachFile := range users.AllUsers[k].Files {
 			if regexableFile(eachFile.Filename) {
+				users.AllUsers[k].Files[kf].Mode = 3
 				continue
 			}
-			v.SizeParanoid = v.SizeParanoid + eachFile.Size
+			users.AllUsers[k].Files[kf].Mode = 1
+			users.AllUsers[k].SizeParanoid = users.AllUsers[k].SizeParanoid + eachFile.Size
 		}
 		// percentages
-		for _, eachFolder := range v.Folders {
+		for kf, eachFolder := range users.AllUsers[k].Folders {
 			if regexableFolder(eachFolder.Folder) {
 				continue
 			}
-			eachFolder.Percentage = math.Round(float64(v.SizeParanoid)/float64(eachFolder.Size)*100) / 100.
+			if eachFolder.Size == 0 {
+				users.AllUsers[k].Folders[kf].PercentageP = 0
+				continue
+			}
+			users.AllUsers[k].Folders[kf].PercentageP = math.Round(float64(eachFolder.Size)/float64(users.AllUsers[k].SizeParanoid)*10000.) / 100.
 		}
-		for _, eachFile := range v.Files {
+		for kf, eachFile := range users.AllUsers[k].Files {
 			if regexableFile(eachFile.Filename) {
 				continue
 			}
-			eachFile.Percentage = math.Round(float64(v.SizeParanoid)/float64(eachFile.Size)*100) / 100.
+			if eachFile.Size == 0 {
+				users.AllUsers[k].Files[kf].PercentageP = 0
+				continue
+			}
+			users.AllUsers[k].Files[kf].PercentageP = math.Round(float64(eachFile.Size)/float64(users.AllUsers[k].SizeParanoid)*10000.) / 100.
 		}
 
 	}
 
 	////
 	////
-
-	Paranoia = true
-	ExParanoia = true
-	for _, v := range users.AllUsers {
-		// sizes
-		for _, eachFolder := range v.Folders {
-			if regexableFolder(eachFolder.Folder) {
-				continue
-			}
-			v.SizeExParanoid = v.SizeExParanoid + eachFolder.Size
-		}
-		for _, eachFile := range v.Files {
-			if regexableFile(eachFile.Filename) {
-				continue
-			}
-			v.SizeExParanoid = v.SizeExParanoid + eachFile.Size
-		}
-		// percentages
-		for _, eachFolder := range v.Folders {
-			if regexableFolder(eachFolder.Folder) {
-				continue
-			}
-			eachFolder.Percentage = math.Round(float64(v.SizeExParanoid)/float64(eachFolder.Size)*100) / 100.
-		}
-		for _, eachFile := range v.Files {
-			if regexableFile(eachFile.Filename) {
-				continue
-			}
-			eachFile.Percentage = math.Round(float64(v.SizeExParanoid)/float64(eachFile.Size)*100) / 100.
-		}
-	}
 
 	Paranoia = false
-	ExParanoia = false
+	for k := range users.AllUsers {
+		// sizes
+		for kf, eachFolder := range users.AllUsers[k].Folders {
+			if regexableFolder(eachFolder.Folder) {
+				continue
+			}
+			users.AllUsers[k].Folders[kf].Mode = 0
+			users.AllUsers[k].SizeNormal = users.AllUsers[k].SizeNormal + eachFolder.Size
+		}
+		for kf, eachFile := range users.AllUsers[k].Files {
+			if regexableFile(eachFile.Filename) {
+				users.AllUsers[k].Files[kf].Mode = 3
+				continue
+			}
+			users.AllUsers[k].Files[kf].Mode = 0
+			users.AllUsers[k].SizeNormal = users.AllUsers[k].SizeNormal + eachFile.Size
+		}
+		// percentages
+		for kf, eachFolder := range users.AllUsers[k].Folders {
+			if regexableFolder(eachFolder.Folder) {
+				continue
+			}
+			if eachFolder.Size == 0 {
+				users.AllUsers[k].Folders[kf].Percentage = 0
+				continue
+			}
+			users.AllUsers[k].Folders[kf].Percentage = math.Round(float64(eachFolder.Size)/float64(users.AllUsers[k].SizeNormal)*10000.) / 100.
+		}
+		for kf, eachFile := range users.AllUsers[k].Files {
+			if regexableFile(eachFile.Filename) {
+				continue
+			}
+			if eachFile.Size == 0 {
+				users.AllUsers[k].Files[kf].Percentage = 0
+				continue
+			}
+			users.AllUsers[k].Files[kf].Percentage = math.Round(float64(eachFile.Size)/float64(users.AllUsers[k].SizeNormal)*10000.) / 100.
+		}
+	}
 }
 
 func getSizeSingle(user u.UserProfile) string {
