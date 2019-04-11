@@ -47,11 +47,6 @@ type UserProfile struct {
 }
 
 //Backup backs the user folder up. This will break it down per folder internally to the []userRootFolder
-func (u UserProfile) Backup(dst string) {
-	for _, v := range u.Folders {
-		v.Backup(dst)
-	}
-}
 
 func (u UserList) GetList() (temp []string) {
 	for _, v := range u.AllUsers {
@@ -119,5 +114,3 @@ func (u UserList) SetSize() UserList {
 
 	return u
 }
-
-

@@ -1,6 +1,7 @@
 package windows
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"math"
@@ -8,7 +9,9 @@ import (
 	"path/filepath"
 	"strings"
 
+	humanize "github.com/dustin/go-humanize"
 	d "github.com/mjmorell/gobak/driveutils"
+	p "github.com/mjmorell/gobak/strutils"
 	u "github.com/mjmorell/gobak/userutils"
 )
 
@@ -161,17 +164,57 @@ func SizeUsers(users *u.UserList) {
 	}
 }
 
-func getSizeSingle(user u.UserProfile) string {
-	// temp := float64(DirSize(user.AbsolutePath + "\\"))
-	/*
-		if temp > 1024*1024*1024 {
-			return STR(temp/1024.0/1024.0/1024.0) + "_GB"
-		} else if temp > 1024 {
-			return STR(temp/1024.0/1024.0) + "_MB"
-		} else {
-			return STR(temp/1024.0) + "_KB"
+func WhatUsers(users u.UserList) u.UserList {
+	p.Header()
+
+	userStrings := []string{}
+	userInformation := []string{}
+	if Paranoia {
+		//fmt.Printf(p.Green("    USERNAME ") + "           | %%total | " + p.Yellow("               Size       ") + "| Estimated" + "\n")
+		//fmt.Println("────────────────────────────────────────────────────────────────────────────────────────────────────")
+		for _, v := range users.AllUsers {
+			fmt.Printf("--\n")
+			userStrings = append(userStrings, fmt.Sprintf("%-28s ", v.Username))
+			userInformation = append(userInformation, fmt.Sprintf("| %05.2f%% | %28s bytes | %s", v.PercentageP, p.Yellow(humanize.Comma(int64(v.SizeParanoid))), printSize(v.SizeParanoid)))
 		}
-		return ""
-	*/
-	return ""
+	} else {
+		//fmt.Printf(p.Green("    USERNAME ") + "           | %%total | " + p.Yellow("               Size       ") + "| Estimated" + "\n")
+		//fmt.Println("────────────────────────────────────────────────────────────────────────────────────────────────────")
+		for _, v := range users.AllUsers {
+			fmt.Printf("--\n")
+			userStrings = append(userStrings, fmt.Sprintf("%-28s ", v.Username))
+			userInformation = append(userInformation, fmt.Sprintf("| %05.2f%% | %28s bytes | %s", v.Percentage, p.Yellow(humanize.Comma(int64(v.SizeNormal))), printSize(v.SizeNormal)))
+		}
+	}
+
+	p.Flush()
+
+	choices := p.QChoiceMultiple("What users would you like to back up?", userStrings, userInformation)
+
+	var usersToBackup u.UserList
+	for k := range choices {
+		choices[k] = strings.Trim(choices[k], " ")
+		for _, v := range users.AllUsers {
+			if v.Username == choices[k] {
+				usersToBackup.AllUsers = append(usersToBackup.AllUsers, v)
+			}
+		}
+	}
+	return usersToBackup
+}
+
+func printSize(size uint64) (str string) {
+	if size > 2*1024 { //kb
+		if size > 2*1024*1024 { //mb
+			if size > 2*1024*1024*1024 { //gb
+				if size > 2*1024*1024*1024*1024 { //tb
+					return fmt.Sprintf("%.2f TB", float64(size)/(1024.0*1024.0*1024.0*1024.0))
+				}
+				return fmt.Sprintf("%.2f GB", float64(size)/(1024.0*1024.0*1024.0))
+			}
+			return fmt.Sprintf("%.2f MB", float64(size)/(1024.0*1024.0))
+		}
+		return fmt.Sprintf("%.2f KB", float64(size)/(1024.0))
+	}
+	return fmt.Sprintf("%d Bytes", size)
 }

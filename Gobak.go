@@ -2,6 +2,9 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
+	"os"
+	"strconv"
 
 	goserve "github.com/mjmorell/GoServe"
 	d "github.com/mjmorell/gobak/driveutils"
@@ -16,6 +19,8 @@ var (
 )
 
 func main() {
+	fmt.Printf("")
+	agreement()
 	login()
 	identifier()
 
@@ -29,13 +34,16 @@ func main() {
 	case "WIN":
 		w.MapDrive(goserveClient.Username, goserveClient.Password)
 		src, dst := w.DiskSelection()
-		source := d.Drive{Path: src}
-		destination := d.Drive{Path: dst}
-		destination = destination
+		backupInfo.Source = d.Drive{Path: src}
+		backupInfo.Destination = d.Drive{Path: dst}
+		if p.DevMode != 0 {
+			backupInfo.Destination.Path += "\\_TEST-FOLDERS\\"
+		}
+		backupInfo.Destination.Path = backupInfo.Destination.Path + backupInfo.ID
 		p.Flush()
 
 		var users u.UserList
-		users = w.GetUsers(source)
+		users = w.GetUsers(backupInfo.Source)
 		w.SetupUsers(&users)
 		w.SizeUsers(&users)
 		p.Flush()
@@ -43,13 +51,32 @@ func main() {
 		//users.LogPrintoutAllUsers()
 		users = users.SetSize()
 
-		w.Paranoia = w.ParanoiaRequestWindows(users)
+		w.ParanoiaRequestWindows(users)
 
-		if w.Paranoia {
-			fmt.Println("Yes!")
+		usersToBackup := w.WhatUsers(users)
+
+		//for _, v := range usersToBackup.AllUsers {
+		//	fmt.Println(v)
+		//}
+
+		if _, err := os.Stat(backupInfo.Destination.Path); !os.IsNotExist(err) {
+			for i := 1; i < 25; i++ {
+				if _, err := os.Stat(backupInfo.Destination.Path + "-(" + strconv.Itoa(i) + ")"); os.IsNotExist(err) {
+					backupInfo.Destination.Path += "-(" + strconv.Itoa(i) + ")"
+					os.Mkdir(backupInfo.Destination.Path, 0666)
+					break
+				}
+			}
 		} else {
-			fmt.Println("NO!")
+			os.Mkdir(backupInfo.Destination.Path, 0666)
 		}
+
+		for _, v := range usersToBackup.AllUsers {
+			fmt.Println(p.Green("Backing up " + v.Username))
+			w.CopyUser(backupInfo, v)
+		}
+
+		
 	// --------------
 	//  MacOS BACKUP
 	// --------------
@@ -57,4 +84,30 @@ func main() {
 	case "MAC":
 		//MacOS Backup / Setup
 	}
+}
+
+func random(randomThis ...interface{}) interface{} {
+	switch len(randomThis) {
+	case 0:
+		return rand.Int63()
+	case 1:
+		switch randomThis[0].(type) {
+		case int:
+			return rand.Int63() % int64(randomThis[0].(int))
+		}
+
+	case 2:
+		switch randomThis[0].(type) {
+		case int:
+			switch randomThis[1].(type) {
+			case int:
+				temp := randomThis[1].(int) - randomThis[0].(int)
+				return (rand.Int63() % int64(temp)) + int64(randomThis[0].(int))
+			}
+
+		}
+
+	default:
+	}
+	return 0
 }

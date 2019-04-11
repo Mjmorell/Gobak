@@ -159,3 +159,45 @@ func QCustom(question string, choicesAnswer, choices []string) (answer string) {
 	}
 	return
 }
+
+func QChoiceMultiple(question string, choicesPre []string, information ...[]string) (answers []string) {
+	var answer int
+	choices := make([]string, len(choicesPre))
+	copy(choices, choicesPre)
+	for true {
+		Header()
+		if len(choices) == 0 {
+			return answers
+		}
+		for i, value := range choices {
+			fmt.Printf("%4s %s", fmt.Sprintf("(%v)", i+1), value)
+			if len(information) > 0 {
+				fmt.Print(" - " + information[0][i])
+			}
+			fmt.Printf("\n")
+		}
+		fmt.Println("    ─────")
+		fmt.Println(" (0) Submit")
+		fmt.Println("    ─────")
+
+		fmt.Printf("    %s\n", Cyan(question))
+		fmt.Printf("  > ")
+		fmt.Scan(&answer)
+		if answer == 0 {
+			if len(answers) > 0 {
+				return answers
+			} else {
+				continue
+			}
+		}
+		if answer > 0 && answer < len(choices)+1 {
+			answers = append(answers, choices[answer-1])
+			choices = append(choices[:answer-1], choices[answer:]...)
+			if len(information) > 0 {
+				information[0] = append(information[0][:answer-1], information[0][answer:]...)
+			}
+		}
+	}
+	panic("HOW DID THIS HAPPEN?")
+	//return -1, ""
+}

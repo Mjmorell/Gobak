@@ -8,6 +8,35 @@ import (
 	"runtime"
 )
 
+var (
+	CurrentProcess = ""
+	loadingCycle   = 0
+)
+
+func LoadingGif() {
+	switch loadingCycle % 6 {
+	case 0:
+		fmt.Printf("\rLoading                                                                                            ")
+
+	case 1:
+		fmt.Printf("\rLoading █                                                                                          ")
+
+	case 2:
+		fmt.Printf("\rLoading █ █                                                                                        ")
+
+	case 3:
+		fmt.Printf("\rLoading █ █ █                                                                                      ")
+
+	case 4:
+		fmt.Printf("\rLoading █ █                                                                                        ")
+
+	case 5:
+		fmt.Printf("\rLoading █                                                                                          ")
+	}
+
+	loadingCycle = loadingCycle + 1
+}
+
 func PanicR(str string) {
 	Clear()
 	fmt.Printf("\n")
@@ -57,15 +86,20 @@ func Flush() {
 func Header(col ...func(...interface{}) string) {
 	Clear()
 	fmt.Println("────────────────────────────────────────────────────────────────────────────────────────────────────")
-	fmt.Println(CenterStringR(HIYellow("ShonStop")+` ── KB0016604 ── v`+Version+"_"+GitCommit, 0, 39))
+	fmt.Println(CenterStringR(HIYellow("ShonStop")+` ── KB0016604 ── v`+fmt.Sprintf("%4s", Version)+"_"+GitCommit, 0, 38))
+
+	if CurrentProcess != "" {
+		fmt.Println("    Current Process: " + Magenta(CurrentProcess))
+	}
+
 	if OffMode {
-		fmt.Println(CenterStringR(HICyan("-- OFFLINE MODE --"), 0, 18))
+		fmt.Println(HICyan("    OFFLINE MODE"))
 	}
 	if DevMode == 1 {
-		fmt.Println(CenterStringR(HIRed("-- PPRD MODE --"), 0, 15))
+		fmt.Println(HIRed("    PPRD MODE"))
 	}
 	if DevMode == -1 {
-		fmt.Println(CenterStringR(HIRed("-- DEVELOPER MODE --"), 0, 20))
+		fmt.Println(HIRed("    DEVELOPER MODE"))
 	}
 	fmt.Println("────────────────────────────────────────────────────────────────────────────────────────────────────")
 

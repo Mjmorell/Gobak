@@ -19,10 +19,6 @@ type UserRootFolder struct {
 	Folder string
 }
 
-func (uRF UserRootFolder) Backup(dst string) {
-
-}
-
 type UserRootFile struct {
 	//Size holds size in B
 	Size uint64

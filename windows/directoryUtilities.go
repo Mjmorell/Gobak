@@ -13,6 +13,7 @@ import (
 )
 
 func getDrives(drivestoinclude ...string) (r d.DriveList) {
+	p.LoadingGif()
 	for _, drive := range "ABCDEFGHIJKLMNOPQRSTUVWXYZ" {
 		_, err := os.Open(string(drive) + ":\\")
 		if err != nil {
@@ -26,6 +27,7 @@ func getDrives(drivestoinclude ...string) (r d.DriveList) {
 }
 
 func isHDBackups(src string) bool {
+	p.LoadingGif()
 	entries, _ := ioutil.ReadDir(src)
 	for _, entry := range entries {
 		if entry.Name() == "_backupFlag" {
@@ -36,7 +38,7 @@ func isHDBackups(src string) bool {
 }
 
 func getInformation(src string) (drive d.Drive) {
-
+	p.LoadingGif()
 	drive.DiskUsed = du.NewDiskUsage(src)
 	drive.Path = src
 	entries, _ := ioutil.ReadDir(src)
@@ -58,17 +60,18 @@ func getInformation(src string) (drive d.Drive) {
 }
 
 func MapDrive(username, password string) ([]byte, error) {
+	p.LoadingGif()
 	temp := "/user:" + username
-	p.Header()
 	exec.Command("net", "use", "M:", "/delete").CombinedOutput()
-	if p.QYesNo("Is this a Liberty Machine?") {
+	/*if p.QYesNo("Is this a Liberty Machine?") {
 		return exec.Command("net", "use", "M:", `\\fs3\hdbackups`, temp, password, "/P:NO").CombinedOutput()
-	} else {
-		return exec.Command("net", "use", "M:", `\\fs3.liberty.edu\hdbackups`, temp, password, "/P:NO").CombinedOutput()
-	}
+	} else {*/
+	return exec.Command("net", "use", "M:", `\\fs3.liberty.edu\hdbackups`, temp, password, "/P:NO").CombinedOutput()
+
 }
 
 func DiskSelection() (src, dst string) {
+	p.LoadingGif()
 	driveList := getDrives()
 
 	src = p.QCustom("What is the Backup Source?", driveList.GetList(), driveList.GetEasyPrint())
