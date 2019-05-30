@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
 	"os"
 	"strconv"
 
@@ -76,7 +75,6 @@ func main() {
 			w.CopyUser(backupInfo, v)
 		}
 
-		
 	// --------------
 	//  MacOS BACKUP
 	// --------------
@@ -84,30 +82,4 @@ func main() {
 	case "MAC":
 		//MacOS Backup / Setup
 	}
-}
-
-func random(randomThis ...interface{}) interface{} {
-	switch len(randomThis) {
-	case 0:
-		return rand.Int63()
-	case 1:
-		switch randomThis[0].(type) {
-		case int:
-			return rand.Int63() % int64(randomThis[0].(int))
-		}
-
-	case 2:
-		switch randomThis[0].(type) {
-		case int:
-			switch randomThis[1].(type) {
-			case int:
-				temp := randomThis[1].(int) - randomThis[0].(int)
-				return (rand.Int63() % int64(temp)) + int64(randomThis[0].(int))
-			}
-
-		}
-
-	default:
-	}
-	return 0
 }
