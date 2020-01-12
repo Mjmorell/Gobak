@@ -1,5 +1,11 @@
 package main
 
+/************************************************
+	MIT License
+	Details viewable in the Github Directory
+	Copyright (c) 2020 Michael Morell
+************************************************/
+
 import (
 	"fmt"
 	"os"

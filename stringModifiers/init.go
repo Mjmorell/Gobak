@@ -1,4 +1,4 @@
-package strutils
+package stringmodifiers
 
 import "github.com/fatih/color"
 
@@ -33,15 +33,6 @@ var (
 	Italic func(...interface{}) string
 	//Underline and all others are colors
 	Underline func(...interface{}) string
-
-	//Version is version...
-	Version string
-	//GitCommit holds commit
-	GitCommit string
-
-	DevMode int
-
-	OffMode bool
 )
 
 func init() {
