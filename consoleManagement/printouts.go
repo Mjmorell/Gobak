@@ -1,4 +1,4 @@
-package strutils
+package consolemanagement
 
 import (
 	"bufio"
@@ -7,14 +7,14 @@ import (
 	"os/exec"
 	"runtime"
 
-	bm "github.com/mjmorell/gobak/backupmanagement"
-	sm "github.com/mjmorell/gobak/stringmodifiers"
+	"gobak/backupmanagement"
+	. "gobak/stringformatting"
 )
 
 func Header(col ...func(...interface{}) string) {
 	Clear()
 	fmt.Println("────────────────────────────────────────────────────────────────────────────────────────────────────")
-	fmt.Println(CenterStringR(sm.HIYellow("GoBak")+` ── v`+fmt.Sprintf("%4s", bm.Version)+"_"+bm.GitCommit, 0, 38))
+	fmt.Println(CenterStringR(HIYellow("GoBak")+` ── v`+fmt.Sprintf("%4s", backupmanagement.Version)+"_"+backupmanagement.GitCommit, 0, 38))
 	fmt.Println("────────────────────────────────────────────────────────────────────────────────────────────────────")
 
 }
@@ -22,7 +22,7 @@ func Header(col ...func(...interface{}) string) {
 func PanicR(str string) {
 	Clear()
 	fmt.Printf("\n")
-	fmt.Printf(sm.Red(str))
+	fmt.Printf(Red(str))
 	fmt.Printf("\n\n")
 	os.Exit(9)
 }
@@ -37,7 +37,7 @@ func Wait(str ...string) {
 		CenterString("──────────────────────────────", 0, 30)
 	} else {
 		CenterString("──────────────────────────────", 0, 30)
-		CenterString(sm.Cyan("Press")+sm.Magenta(" [Enter] ")+sm.Cyan("to continue."), 0, 26)
+		CenterString(Cyan("Press")+Magenta(" [Enter] ")+Cyan("to continue."), 0, 26)
 		CenterString("──────────────────────────────", 0, 30)
 	}
 	reader := bufio.NewReader(os.Stdin)

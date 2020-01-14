@@ -11,7 +11,7 @@ import (
 
 	humanize "github.com/dustin/go-humanize"
 	d "github.com/mjmorell/gobak/driveutils"
-	p "github.com/mjmorell/gobak/strutils"
+	p "github.com/mjmorell/gobak/consolemanagement"
 	u "github.com/mjmorell/gobak/userutils"
 )
 

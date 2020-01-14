@@ -1,11 +1,11 @@
-package strutils
+package consolemanagement
 
 import (
 	"fmt"
 	"strings"
 	"syscall"
 
-	sm "github.com/mjmorell/gobak/stringmodifiers"
+	. "gobak/stringformatting"
 	"golang.org/x/crypto/ssh/terminal"
 )
 
@@ -13,7 +13,7 @@ func QGeneric(question ...string) string {
 	Header()
 	var answer string
 	for _, each := range question {
-		fmt.Printf("    %s\n", sm.Cyan(each))
+		fmt.Printf("    %s\n", Cyan(each))
 	}
 	fmt.Printf("  > ")
 	fmt.Scan(&answer)
@@ -25,7 +25,7 @@ func QPassword(question string) string {
 	var answer string
 	for true {
 		Header()
-		fmt.Printf("    %s\n", sm.Cyan(question))
+		fmt.Printf("    %s\n", Cyan(question))
 		fmt.Printf("  > ")
 		answer = password()
 		if answer != "" {
@@ -45,7 +45,7 @@ func QChoiceString(question string, choices ...string) string {
 	var answer int
 	for true {
 		Header()
-		fmt.Printf("    %s\n", sm.Cyan(question))
+		fmt.Printf("    %s\n", Cyan(question))
 		fmt.Println("    ─────")
 		for i, value := range choices {
 			fmt.Printf("(%v) %s\n", i+1, value)
@@ -65,7 +65,7 @@ func QYesNo(question string) bool {
 	var answer string
 	for true {
 		Header()
-		fmt.Printf("    %s\n", sm.Cyan(question))
+		fmt.Printf("    %s\n", Cyan(question))
 		fmt.Println("    ─────")
 		fmt.Println("(1) Yes")
 		fmt.Println("(2) No")
@@ -88,7 +88,7 @@ func QYesNo(question string) bool {
 func QYesNoNOCLEAR(question string) bool {
 	var answer string
 	for true {
-		fmt.Printf("    %s\n", sm.Cyan(question))
+		fmt.Printf("    %s\n", Cyan(question))
 		fmt.Println("    ─────")
 		fmt.Println("(1) Yes")
 		fmt.Println("(2) No")
@@ -111,7 +111,7 @@ func QYesNoNOCLEAR(question string) bool {
 func QArray(question string, choices []string) (answer int) {
 	for true {
 		Header()
-		fmt.Printf("    %s\n", sm.Cyan(question))
+		fmt.Printf("    %s\n", Cyan(question))
 		fmt.Println("    ─────")
 		for i, value := range choices {
 			fmt.Printf("(%v) %s\n", i+1, value)
@@ -131,7 +131,7 @@ func QArray(question string, choices []string) (answer int) {
 func QCustom(question string, choicesAnswer, choices []string) (answer string) {
 	var temp int
 	Header()
-	fmt.Printf("    %s\n", sm.Cyan(question))
+	fmt.Printf("    %s\n", Cyan(question))
 	fmt.Println("    ─────")
 	for i, value := range choices {
 		fmt.Printf("(%v) %s\n", i+1, value)
@@ -171,7 +171,7 @@ func QChoiceMultiple(question string, choicesPre []string, information ...[]stri
 		fmt.Println(" (0) Submit")
 		fmt.Println("    ─────")
 
-		fmt.Printf("    %s\n", sm.Cyan(question))
+		fmt.Printf("    %s\n", Cyan(question))
 		fmt.Printf("  > ")
 		fmt.Scan(&answer)
 		if answer == 0 {

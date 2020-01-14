@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	humanize "github.com/dustin/go-humanize"
-	p "github.com/mjmorell/gobak/strutils"
+	p "github.com/mjmorell/gobak/consolemanagement"
 	u "github.com/mjmorell/gobak/userutils"
 )
 

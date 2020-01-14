@@ -1,6 +1,12 @@
 package backupmanagement
 
-import "github.com/mjmorell/GoBak/diskmanagement"
+import (
+	"fmt"
+
+	cm "gobak/consolemanagement"
+	"gobak/diskmanagement"
+	. "gobak/stringformatting"
+)
 
 var (
 	//Version is version...
@@ -35,4 +41,21 @@ type BackupInfo struct {
 
 	//Source holds the 'drive' for the source of backup
 	Source diskmanagement.Disk
+}
+
+func agreement() {
+	cm.Header()
+	cm.CenterString(Green("Please note, ")+Red("this program is not 100%% guaranteed."), 0, 49)
+	cm.CenterString("This program is built as-is, and is not certified by Anyone.", 0, 56)
+	cm.CenterString("Any questions can be directed to the github repo "+Green("GoBak"), 0, 53)
+
+	cm.CenterString(Red("──────────────────────────────"), 0, 30)
+
+	cm.CenterString("All sizing estimates are based off of division with "+Green("1024")+" as bytes", 0, 65)
+	cm.CenterString("These sizing estimates are based off the binary system!! Such as:", 0, 65)
+	cm.CenterString("A file sized at 10 Kilobytes is 10*1024 Bytes. Not 10*1000 Bytes.", 0, 65)
+	fmt.Println()
+	cm.CenterString("Therefore, size estimates post-backup may be different depending", 0, 65)
+	cm.CenterString("on which Operating System the sizing estimate is made from.", 0, 59)
+	cm.Wait(Cyan("Press") + Magenta(" [Enter] ") + Cyan("to acknowledge"))
 }

@@ -3,11 +3,10 @@ package windows
 import (
 	"io/ioutil"
 	"os"
-	"os/exec"
 	"path/filepath"
 
 	d "github.com/mjmorell/gobak/driveutils"
-	p "github.com/mjmorell/gobak/strutils"
+	p "github.com/mjmorell/gobak/consolemanagement"
 
 	"github.com/ricochet2200/go-disk-usage/du"
 )
@@ -26,16 +25,17 @@ func getDrives(drivestoinclude ...string) (r d.DriveList) {
 	return
 }
 
-func isHDBackups(src string) bool {
-	p.LoadingGif()
-	entries, _ := ioutil.ReadDir(src)
-	for _, entry := range entries {
-		if entry.Name() == "_backupFlag" {
-			return true
-		}
-	}
-	return false
-}
+// DEPRECATED
+// func isHDBackups(src string) bool {
+// 	p.LoadingGif()
+// 	entries, _ := ioutil.ReadDir(src)
+// 	for _, entry := range entries {
+// 		if entry.Name() == "_backupFlag" {
+// 			return true
+// 		}
+// 	}
+// 	return false
+// }
 
 func getInformation(src string) (drive d.Drive) {
 	p.LoadingGif()
@@ -59,16 +59,16 @@ func getInformation(src string) (drive d.Drive) {
 	return
 }
 
-func MapDrive(username, password string) ([]byte, error) {
-	p.LoadingGif()
-	temp := "/user:" + username
-	exec.Command("net", "use", "M:", "/delete").CombinedOutput()
-	/*if p.QYesNo("Is this a Liberty Machine?") {
-		return exec.Command("net", "use", "M:", `\\fs3\hdbackups`, temp, password, "/P:NO").CombinedOutput()
-	} else {*/
-	return exec.Command("net", "use", "M:", `\\fs3.liberty.edu\hdbackups`, temp, password, "/P:NO").CombinedOutput()
-
-}
+// DEPRECATED: What's this 'Liberty'?
+// func MapDrive(username, password string) ([]byte, error) {
+// 	p.LoadingGif()
+// 	temp := "/user:" + username
+// 	exec.Command("net", "use", "M:", "/delete").CombinedOutput()
+// 	/*if p.QYesNo("Is this a Liberty Machine?") {
+// 		return exec.Command("net", "use", "M:", `\\fs3\hdbackups`, temp, password, "/P:NO").CombinedOutput()
+// 	} else {*/
+// 	return exec.Command("net", "use", "M:", `\\fs3.liberty.edu\hdbackups`, temp, password, "/P:NO").CombinedOutput()
+// }
 
 func DiskSelection() (src, dst string) {
 	p.LoadingGif()

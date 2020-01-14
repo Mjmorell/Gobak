@@ -10,7 +10,7 @@ import (
 	"strings"
 
 	d "github.com/mjmorell/gobak/driveutils"
-	p "github.com/mjmorell/gobak/strutils"
+	p "github.com/mjmorell/gobak/consolemanagement"
 	u "github.com/mjmorell/gobak/userutils"
 )
 
