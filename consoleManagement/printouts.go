@@ -7,23 +7,24 @@ import (
 	"os/exec"
 	"runtime"
 
-	"gobak/backupmanagement"
 	. "gobak/stringformatting"
 )
+
+// TODO: Keep cleaning up the starter code, start with CenterString ones
 
 func Header(col ...func(...interface{}) string) {
 	Clear()
 	fmt.Println("────────────────────────────────────────────────────────────────────────────────────────────────────")
-	fmt.Println(CenterStringR(HIYellow("GoBak")+` ── v`+fmt.Sprintf("%4s", backupmanagement.Version)+"_"+backupmanagement.GitCommit, 0, 38))
+	fmt.Println("    " + HIYellow("GoBak"))
 	fmt.Println("────────────────────────────────────────────────────────────────────────────────────────────────────")
 
 }
 
 func PanicR(str string) {
 	Clear()
-	fmt.Printf("\n")
-	fmt.Printf(Red(str))
-	fmt.Printf("\n\n")
+	fmt.Println()
+	fmt.Println(Red(str))
+	fmt.Println()
 	os.Exit(9)
 }
 
@@ -32,13 +33,13 @@ func Wait(str ...string) {
 	Flush()
 	fmt.Println()
 	if len(str) > 0 {
-		CenterString("──────────────────────────────", 0, 30)
-		CenterString(str[0], 0, 28)
-		CenterString("──────────────────────────────", 0, 30)
+		PrintlnCenter("──────────────────────────────", 0, 30)
+		PrintlnCenter(str[0], 0, 28)
+		PrintlnCenter("──────────────────────────────", 0, 30)
 	} else {
-		CenterString("──────────────────────────────", 0, 30)
-		CenterString(Cyan("Press")+Magenta(" [Enter] ")+Cyan("to continue."), 0, 26)
-		CenterString("──────────────────────────────", 0, 30)
+		PrintlnCenter("──────────────────────────────", 0, 30)
+		PrintlnCenter(Cyan("Press")+Magenta(" [Enter] ")+Cyan("to continue."), 0, 26)
+		PrintlnCenter("──────────────────────────────", 0, 30)
 	}
 	reader := bufio.NewReader(os.Stdin)
 	reader.ReadString('\n')
@@ -65,33 +66,34 @@ func Flush() {
 	}
 }
 
-func CenterString(s string, w, sw int) {
-	if w == 0 {
-		w = 100
+//PrintlnCenter Prints a string in the center
+func PrintlnCenter(str string, totalWidth, strWidth int) {
+	if totalWidth == 0 {
+		totalWidth = 100
 	}
-	if sw == 0 {
-		fmt.Printf(fmt.Sprintf("%[1]*s", -w, fmt.Sprintf("%[1]*s", (w+len(s))/2, s)))
-		fmt.Printf("\n")
+	if strWidth == 0 {
+		fmt.Printf(fmt.Sprintf("%[1]*s", -totalWidth, fmt.Sprintf("%[1]*s", (totalWidth+len(str))/2, str)))
+		fmt.Println()
 		return
 	}
-	for i := 0; i < (w-sw)/2; i++ {
+	for i := 0; i < (totalWidth-strWidth)/2; i++ {
 		fmt.Printf(" ")
 	}
-	fmt.Printf(s + "\n")
+	fmt.Println(str)
 
 }
 
-func CenterStringR(s string, w, sw int) (temp string) {
-	if w == 0 {
-		w = 100
+func SPrintlnCenter(str string, totalWidth, strWidth int) (temp string) {
+	if totalWidth == 0 {
+		totalWidth = 100
 	}
-	if sw == 0 {
-		return fmt.Sprintf("%[1]*s", -w, fmt.Sprintf("%[1]*s", (w+len(s))/2, s))
+	if strWidth == 0 {
+		return fmt.Sprintf("%[1]*s", -totalWidth, fmt.Sprintf("%[1]*s", (totalWidth+len(str))/2, str))
 	}
-	for i := 0; i < (w-sw)/2; i++ {
+	for i := 0; i < (totalWidth-strWidth)/2; i++ {
 		temp = temp + " "
 	}
-	temp = temp + s
+	temp = temp + str
 	return temp
 }
 

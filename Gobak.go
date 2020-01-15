@@ -1,36 +1,22 @@
 package main
 
+import (
+	"fmt"
+	cm "gobak/consolemanagement"
+)
+
 // /************************************************
 // 	MIT License
 // 	Details viewable in the Github Directory
 // 	Copyright (c) 2020 Michael Morell
 // ************************************************/
 
-// import (
-// 	"fmt"
-// 	"os"
-// 	"strconv"
+func main() {
+	fmt.Printf("")
+	cm.Agreement()
 
-// 	d "github.com/mjmorell/gobak/driveutils"
-// 	p "github.com/mjmorell/gobak/consolemanagement"
-// 	u "github.com/mjmorell/gobak/userutils"
-// 	w "github.com/mjmorell/gobak/windows"
-// )
-
-var (
-	//Version is version...
-	Version string
-	//GitCommit holds commit
-	GitCommit string
-)
-
-// func main() {
-// 	fmt.Printf("")
-// 	agreement()
-// 	login()
-// 	identifier()
-
-// 	p.Header()
+	cm.Header()
+}
 
 // 	// --------------
 // 	// WINDOWS BACKUP

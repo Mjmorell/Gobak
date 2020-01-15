@@ -1,5 +1,3 @@
-github.com/dustin/go-humanize v1.0.0 h1:VSnTsYCnlFHaM2/igO1h6X3HA71jcobQuxemgkq4zYo=
-github.com/dustin/go-humanize v1.0.0/go.mod h1:HtrtbFcZ19U5GC7JDqmcUSB87Iq5E25KnS6fMYU6eOk=
 github.com/fatih/color v1.9.0 h1:8xPHl4/q1VyqGIPif1F+1V3Y3lSmrq01EabUW3CoW5s=
 github.com/fatih/color v1.9.0/go.mod h1:eQcE1qtQxscV5RaZvpXrrb8Drkc3/DdQ+uUYCNjL+zU=
 github.com/mattn/go-colorable v0.1.4 h1:snbPLB8fVfU9iwbbo30TPtbLRzwWu6aJS6Xh4eaaviA=
@@ -7,12 +5,6 @@ github.com/mattn/go-colorable v0.1.4/go.mod h1:U0ppj6V5qS13XJ6of8GYAs25YV2eR4EVc
 github.com/mattn/go-isatty v0.0.8/go.mod h1:Iq45c/XA43vh69/j3iqttzPXn0bhXyGjM0Hdxcsrc5s=
 github.com/mattn/go-isatty v0.0.11 h1:FxPOTFNqGkuDUGi3H/qkUbQO4ZiBa2brKq5r0l8TGeM=
 github.com/mattn/go-isatty v0.0.11/go.mod h1:PhnuNfih5lzO57/f3n+odYbM4JtupLOxQOAqxQCu2WE=
-github.com/mjmorell/GoBak v0.0.0-20200112021712-537e51d3ba9d h1:NPTjVIc12lmNVT4M4usTCEBr6m6Jh7v0GxT7OSm4ltk=
-github.com/mjmorell/GoBak v0.0.0-20200112021712-537e51d3ba9d/go.mod h1:/UlGnPJvN5eswAbqn9C4y5zU/FWuYvT1oWl4iUHThj0=
-github.com/mjmorell/GoServe v0.0.0-20190722172406-82f2c411b64a h1:L04Qxbamz/sJSaQL3my4xTaaoi/iJy6w79AOoW+i/Rk=
-github.com/mjmorell/GoServe v0.0.0-20190722172406-82f2c411b64a/go.mod h1:hBQ8FjRevRftfyxhQpxHkWVuSF1Kko+TdwKE4gxl7EU=
-github.com/mjmorell/gobak v0.0.0-20200112021712-537e51d3ba9d h1:AcVaZfk1AsBHdfU4MYN4hW/LInr/SSa/YSMwUIZ6F6s=
-github.com/mjmorell/gobak v0.0.0-20200112021712-537e51d3ba9d/go.mod h1:UPjfv3nGO6XhS9DbcHoph9nhe6al4ChXMcx3pCnI0Gk=
 github.com/ricochet2200/go-disk-usage v0.0.0-20150921141558-f0d1b743428f h1:w4VLAgWDnrcBDFSi8Ppn/MrB/Z1A570+MV90CvMtVVA=
 github.com/ricochet2200/go-disk-usage v0.0.0-20150921141558-f0d1b743428f/go.mod h1:yhevTRDiduxPJHQDCtlqUn53ojFPkRh/mKhMUzQUCpc=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
