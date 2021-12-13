@@ -1,38 +1,40 @@
 package stringformatting
 
-import "github.com/fatih/color"
+import (
+	"github.com/fatih/color"
+)
 
 var (
 	//Red and all others are colors
-	Red func(...interface{}) string
+	Red func(...interface{}) string // 27 91 51 49 109
 	//Green and all others are colors
-	Green func(...interface{}) string
+	Green func(...interface{}) string // 27 91 51 50 109
 	//Yellow and all others are colors
-	Yellow func(...interface{}) string
+	Yellow func(...interface{}) string // 27 91 51 51 109
 	//Blue and all others are colors
-	Blue func(...interface{}) string
+	Blue func(...interface{}) string // 27 91 51 52 109
 	//Magenta and all others are colors
-	Magenta func(...interface{}) string
+	Magenta func(...interface{}) string // 27 91 51 53 109
 	//Cyan and all others are colors
-	Cyan func(...interface{}) string
+	Cyan func(...interface{}) string // 27 91 51 54 109
 	//HIRed  and all others are colors
-	HIRed func(...interface{}) string
+	HIRed func(...interface{}) string // 27 91 57 49 109
 	//HIGreen and all others are colors
-	HIGreen func(...interface{}) string
+	HIGreen func(...interface{}) string // 27 91 57 50 109
 	//HIYellow and all others are colors
-	HIYellow func(...interface{}) string
+	HIYellow func(...interface{}) string // 27 91 57 51 109
 	//HIBlue and all others are colors
-	HIBlue func(...interface{}) string
+	HIBlue func(...interface{}) string // 27 91 57 52 109
 	//HIMagenta and all others are colors
-	HIMagenta func(...interface{}) string
+	HIMagenta func(...interface{}) string // 27 91 57 53 109
 	//HICyan and all others are colors
-	HICyan func(...interface{}) string
+	HICyan func(...interface{}) string // 27 91 57 54 109
 	//Bold and all others are colors
-	Bold func(...interface{}) string
+	Bold func(...interface{}) string // 27 91 49 109
 	//Italic and all others are colors
-	Italic func(...interface{}) string
+	Italic func(...interface{}) string // 27 91 51 109
 	//Underline and all others are colors
-	Underline func(...interface{}) string
+	Underline func(...interface{}) string // 27 91 52 109
 )
 
 func init() {
@@ -53,4 +55,24 @@ func init() {
 	Bold = color.New(color.Bold).SprintFunc()
 	Italic = color.New(color.Italic).SprintFunc()
 	Underline = color.New(color.Underline).SprintFunc()
+}
+
+//Length provides the 'visible' length of a string, ignoring special characters and double-length characters
+func Length(str string) int {
+	ignoreNum := 0
+	newStr := []rune(str)
+	// fmt.Println(len(newStr))
+	for x, y := range newStr {
+		// fmt.Println(x, " - ", y)
+		if y == 27 {
+			for i := 1; i < 5; i++ {
+				// fmt.Println("    ", i, ": ", str[x+i])
+				if newStr[x+i] == 109 {
+					ignoreNum += i + 1
+					break
+				}
+			}
+		}
+	}
+	return len(newStr) - ignoreNum
 }

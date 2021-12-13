@@ -10,14 +10,11 @@ import (
 	. "gobak/stringformatting"
 )
 
-// TODO: Keep cleaning up the starter code, start with CenterString ones
-
 func Header(col ...func(...interface{}) string) {
 	Clear()
-	fmt.Println("────────────────────────────────────────────────────────────────────────────────────────────────────")
+	fmt.Println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 	fmt.Println("    " + HIYellow("GoBak"))
-	fmt.Println("────────────────────────────────────────────────────────────────────────────────────────────────────")
-
+	fmt.Println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 }
 
 func PanicR(str string) {
@@ -32,15 +29,19 @@ func PanicR(str string) {
 func Wait(str ...string) {
 	Flush()
 	fmt.Println()
+	border := ""
+	printer := Cyan("Press") + Magenta(" [Enter] ") + Cyan("to continue.")
 	if len(str) > 0 {
-		PrintlnCenter("──────────────────────────────", 0, 30)
-		PrintlnCenter(str[0], 0, 28)
-		PrintlnCenter("──────────────────────────────", 0, 30)
-	} else {
-		PrintlnCenter("──────────────────────────────", 0, 30)
-		PrintlnCenter(Cyan("Press")+Magenta(" [Enter] ")+Cyan("to continue."), 0, 26)
-		PrintlnCenter("──────────────────────────────", 0, 30)
+		printer = str[0]
 	}
+	for i := 0; i < Length(printer)+2; i++ {
+		border += "━"
+	}
+
+	PrintlnCentered("┏" + border + "┓")
+	PrintlnCentered("┃ " + printer + " ┃")
+	PrintlnCentered("┗" + border + "┛")
+
 	reader := bufio.NewReader(os.Stdin)
 	reader.ReadString('\n')
 }
@@ -66,35 +67,11 @@ func Flush() {
 	}
 }
 
-//PrintlnCenter Prints a string in the center
-func PrintlnCenter(str string, totalWidth, strWidth int) {
-	if totalWidth == 0 {
-		totalWidth = 100
-	}
-	if strWidth == 0 {
-		fmt.Printf(fmt.Sprintf("%[1]*s", -totalWidth, fmt.Sprintf("%[1]*s", (totalWidth+len(str))/2, str)))
-		fmt.Println()
-		return
-	}
-	for i := 0; i < (totalWidth-strWidth)/2; i++ {
+func PrintlnCentered(str string) {
+	for i := 0; i < (100-Length(str))/2; i++ {
 		fmt.Printf(" ")
 	}
 	fmt.Println(str)
-
-}
-
-func SPrintlnCenter(str string, totalWidth, strWidth int) (temp string) {
-	if totalWidth == 0 {
-		totalWidth = 100
-	}
-	if strWidth == 0 {
-		return fmt.Sprintf("%[1]*s", -totalWidth, fmt.Sprintf("%[1]*s", (totalWidth+len(str))/2, str))
-	}
-	for i := 0; i < (totalWidth-strWidth)/2; i++ {
-		temp = temp + " "
-	}
-	temp = temp + str
-	return temp
 }
 
 var (
